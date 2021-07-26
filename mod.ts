@@ -7,8 +7,8 @@ const args = parse(Deno.args)
 if (args.h) {
     console.log(`
     help:
-        -u USER, can be replaces with TYPE_RACER_USER env variable
-        -s SECRET, can be replaces with TYPE_RACER_SECRET env variable
+        -u USER, can be replaced with TYPE_RACER_USER env variable
+        -s SECRET, can be replaced with TYPE_RACER_SECRET env variable
         -n NUMBER results, if skipped max possible number will be used
         `)
 } else {
