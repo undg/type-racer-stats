@@ -79,4 +79,5 @@ $ type-racer-stats -u undg -s ClIKFgoJdGltZXN0Y(...)QISNGoClIKFgoJdGltZXN0YW1wEg
           31.10 ┤╭╯
           30.10 ┼╯
 ```
+![image](https://user-images.githubusercontent.com/5306983/127060288-5734046f-707c-42bd-a8bc-f387106dd369.png)
 
