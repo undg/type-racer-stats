@@ -4,41 +4,50 @@ import { plot, IPlotConfig } from './deps.ts'
 export function drawChart(data: Stats[]) {
     const config: IPlotConfig = { colors: ['yellow'] }
 
-    // calculate terminal width, give 14 cols extra padding for Y axis
+    // calculate terminal width, give 14 cols breathing space for Y axis
     const { columns } = Deno.consoleSize(Deno.stdin.rid)
     const terminalCols = columns - 14
 
-    const draw = plot(round(data, terminalCols), config)
+    const slicedWpm = slice(
+        data.map((el) => el.wpm),
+        terminalCols
+    )
+
+    const series = [round(slicedWpm)]
+
+    const draw = plot(series, config)
     console.log(draw)
     // THE-END
 }
 
 /**
- * @params {Stats[]} data array of objects with `wpm: number` key.
- * @params {number} resolution of terminal width, this is max number of inner arrays.
- * @returns array of averanged numbers
+ * Round spikes on graph.
+ * Merge slices into one array of averages of each slice.
+ * @params slices - 2d array of slices that will be flattened
+ * @returns array of averaged numbers
  */
-export function round(data: Stats[], resolution: number): number[] {
-    return slice(data, resolution).map(
-        (toBeRounded: number[]) => toBeRounded.reduce((prev, curr) => prev + curr) / toBeRounded.length
-    )
+export function round(slices: number[][]): number[] {
+    return slices.map((slice: number[]) => slice.reduce(sum) / slice.length)
 }
 
 /**
- * @params {Stats[]} data array of objects with `wpm: number` key.
- * @params {number} resolution of terminal width, this is max number of inner arrays.
+ * Slice single larger array into smaller groups.
+ * @params data - array of objects with `wpm: number` key.
+ * @params resolution - of terminal width, this is max number of inner arrays.
  * @returns two dimension array
  */
-export function slice(data: Stats[], resolution: number): number[][] {
-    const wpm = data.map((el) => el.wpm)
-    let sliced = [...new Array(resolution)] // make sure it is not undefined
-    const innerLength = Math.ceil(wpm.length / resolution) // innerArrays
+export function slice(data: number[], resolution: number): number[][] {
+    const innerArrLength = Math.ceil(data.length / resolution)
 
+    const sliced = []
     for (let i = 0; i < resolution; i++) {
-        sliced[i] = wpm.slice(0 + i * innerLength, (i + 1) * innerLength)
+        const innerArr = data.slice(0 + i * innerArrLength, (i + 1) * innerArrLength)
+        if (innerArr?.length) sliced[i] = innerArr
     }
 
-    sliced = sliced.filter((el) => el?.length)
-
     return sliced
+}
+
+function sum(a: number, b: number) {
+    return a + b
 }
