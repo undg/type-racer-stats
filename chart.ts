@@ -14,18 +14,23 @@ export function drawChart(data: Stats[]) {
             terminalCols
         )
     )
-
-    const averangeWpm = roundedSlicedWpm.reduce(sum) / roundedSlicedWpm.length
-    const averangeWpmLine = new Array(roundedSlicedWpm.length).fill(averangeWpm)
+    const averageWpm = roundedSlicedWpm.reduce(sum) / roundedSlicedWpm.length
 
     const roundedSlicedAccuracy = round(
         slice(
-            data.map((el) => (el.accuracy * averangeWpm) / 1000),
+            data.map(
+                (el) =>
+                    // max accuracy have common Y axis with average WPM, so all lines looks nice and tidy 📈
+                    (el.accuracy * averageWpm) / 1000
+            ),
             terminalCols
         )
     )
 
-    const series = [roundedSlicedWpm, roundedSlicedAccuracy, averangeWpmLine].reverse()
+    // static horizontal line
+    const averageWpmLine = new Array(roundedSlicedWpm.length).fill(averageWpm)
+
+    const series = [roundedSlicedWpm, roundedSlicedAccuracy, averageWpmLine].reverse()
 
     const draw = plot(series, config)
     console.log(draw)
@@ -35,8 +40,8 @@ export function drawChart(data: Stats[]) {
 /**
  * Round spikes on graph.
  * Merge slices into one array of averages of each slice.
- * @params slices - 2d array of slices that will be flattened
- * @returns array of averaged numbers
+ * @param slices - 2d array of slices that will be flattened
+ * @return array of averaged numbers
  */
 export function round(slices: number[][]): number[] {
     return slices.map((slice: number[]) => slice.reduce(sum) / slice.length)
@@ -44,9 +49,9 @@ export function round(slices: number[][]): number[] {
 
 /**
  * Slice single larger array into smaller groups.
- * @params data - array of objects with `wpm: number` key.
- * @params resolution - of terminal width, this is max number of inner arrays.
- * @returns two dimension array
+ * @param data - array of objects with `wpm: number` key.
+ * @param resolution - of terminal width, this is max number of inner arrays.
+ * @return two dimension array
  */
 export function slice(data: number[], resolution: number): number[][] {
     const innerArrLength = Math.ceil(data.length / resolution)
