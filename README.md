@@ -35,7 +35,7 @@ echo 'export PATH="$HOME/.deno/bin:$PATH"'    >> ~/.profile
 echo 'export TYPE_RACER_USER={your_username}' >> ~/.profile
 echo 'export TYPE_RACER_SECRET={your_secret}' >> ~/.profile
 ```
-...you get and idea.
+...you get an idea.
 
 
 # Help

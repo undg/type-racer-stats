@@ -2,18 +2,30 @@ import { Stats } from './types.ts'
 import { plot, IPlotConfig } from './deps.ts'
 
 export function drawChart(data: Stats[]) {
-    const config: IPlotConfig = { colors: ['yellow'] }
+    const config: IPlotConfig = { colors: ['yellow', 'magenta', 'red'].reverse() }
 
     // calculate terminal width, give 14 cols breathing space for Y axis
     const { columns } = Deno.consoleSize(Deno.stdin.rid)
     const terminalCols = columns - 14
 
-    const slicedWpm = slice(
-        data.map((el) => el.wpm),
-        terminalCols
+    const roundedSlicedWpm = round(
+        slice(
+            data.map((el) => el.wpm),
+            terminalCols
+        )
     )
 
-    const series = [round(slicedWpm)]
+    const averangeWpm = roundedSlicedWpm.reduce(sum) / roundedSlicedWpm.length
+    const averangeWpmLine = new Array(roundedSlicedWpm.length).fill(averangeWpm)
+
+    const roundedSlicedAccuracy = round(
+        slice(
+            data.map((el) => (el.accuracy * averangeWpm) / 1000),
+            terminalCols
+        )
+    )
+
+    const series = [roundedSlicedWpm, roundedSlicedAccuracy, averangeWpmLine].reverse()
 
     const draw = plot(series, config)
     console.log(draw)
