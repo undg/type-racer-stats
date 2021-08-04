@@ -12,7 +12,7 @@ export async function getData(args: Args) {
 
     for (const row of rows!) {
         const td = row.children
-        const textDate = td[5].textContent
+        const textDate = td[5].textContent.replace(/\s+/g,'')
 
         const unixTime = textDate.toLowerCase() !== 'today' ? new Date(textDate).getTime() : Date.now()
         const d = new Date(unixTime)
