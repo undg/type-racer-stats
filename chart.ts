@@ -1,28 +1,29 @@
 import { Stats } from './types.ts'
-import { plot, IPlotConfig } from './deps.ts'
+import { plot, IPlotConfig, parse } from './deps.ts'
 
-export function drawChart(data: Stats[]) {
+const args = parse(Deno.args, { default: { r: false }, alias: { r: 'reverse' } })
+
+export function drawChart(stats: Stats[]) {
+    const first = stats[0]
+    const last = stats[stats.length - 1]
+    console.log(`from: ${first.date} (${first.id})`)
+    console.log(`to: ${last.date} (${last.id})`)
     const config: IPlotConfig = { colors: ['yellow', 'magenta', 'red'].reverse() }
 
     // calculate terminal width, give 14 cols breathing space for Y axis
     const { columns } = Deno.consoleSize(Deno.stdin.rid)
     const terminalCols = columns - 14
 
-    const roundedSlicedWpm = round(
-        slice(
-            data.map((el) => el.wpm),
-            terminalCols
-        )
-    )
+    const roundedSlicedWpm = round(slice(stats, terminalCols))
     const averageWpm = roundedSlicedWpm.reduce(sum) / roundedSlicedWpm.length
 
     const roundedSlicedAccuracy = round(
         slice(
-            data.map(
-                (el) =>
-                    // max accuracy have common Y axis with average WPM, so all lines looks nice and tidy 📈
-                    (el.accuracy * averageWpm) / 1000
-            ),
+            stats.map((el) => ({
+                id: el.id,
+                // max accuracy have common Y axis with average WPM, so all lines looks nice and tidy 📈
+                wpm: (el.accuracy! * averageWpm) / 1000,
+            })),
             terminalCols
         )
     )
@@ -53,7 +54,8 @@ export function round(slices: number[][]): number[] {
  * @param resolution - of terminal width, this is max number of inner arrays.
  * @return two dimension array
  */
-export function slice(data: number[], resolution: number): number[][] {
+export function slice(stats: Stats[], resolution: number): number[][] {
+    const data = stats.sort(sortStrategy).map((el) => el.wpm)
     const innerArrLength = Math.ceil(data.length / resolution)
 
     const sliced = []
@@ -67,4 +69,11 @@ export function slice(data: number[], resolution: number): number[][] {
 
 function sum(a: number, b: number) {
     return a + b
+}
+
+function sortStrategy(a: Stats, b: Stats) {
+    const ascending = () => a.id - b.id
+    const descending = () => b.id - a.id
+
+    return !args.r ? ascending() : descending()
 }

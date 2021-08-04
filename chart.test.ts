@@ -1,11 +1,10 @@
 import { round, slice } from './chart.ts'
-import { mock } from './mock/jsonResponse.ts'
+import { mock as data} from './mock/jsonResponse.ts'
 import { asserts as t } from './dev_deps.ts'
 
-const data = mock.map((el) => el.wpm)
 
 Deno.test({
-    name: 'Slice the wpm, transform it into 2d array',
+    name: 'slice(): Slice the wpm, transform it into 2d array',
     ignore: false,
     fn() {
         t.assertExists(slice(data, 1), 'should exist')
@@ -87,7 +86,7 @@ Deno.test({
 })
 
 Deno.test({
-    name: `Average 2d sliced array's and flat it out.`,
+    name: `round(): Average 2d sliced array's and flat it out.`,
     ignore: false,
     fn() {
         t.assertEquals(round([[0, 2, 4, 6, 8, 10, 12, 14, 16, 18]]), [9], `should have only 1 averaged numbers`)

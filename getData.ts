@@ -12,11 +12,12 @@ export async function getData(args: Args) {
 
     for (const row of rows!) {
         const td = row.children
+        const textDate = td[5].textContent
 
-        const unixTime = new Date(td[5].textContent).getTime() ?? Date.now()
+        const unixTime = textDate.toLowerCase() !== 'today' ? new Date(textDate).getTime() : Date.now()
         const d = new Date(unixTime)
         const year = d.getFullYear()
-        const month = d.getMonth()
+        const month = d.getMonth() + 1
         const day = d.getDate()
 
         if (idx > 0)

@@ -19,21 +19,18 @@ After that you can simply run `type-racer-stats`
 deno install --allow-net=data.typeracer.com --allow-env --unstable
 echo 'export PATH="$HOME/.deno/bin:$PATH"'    >> ~/.bashrc
 echo 'export TYPE_RACER_USER={your_username}' >> ~/.bashrc
-echo 'export TYPE_RACER_SECRET={your_secret}' >> ~/.bashrc
 ```
 OR
 ```bash
 deno install --allow-net=data.typeracer.com --allow-env --unstable
 echo 'export PATH="$HOME/.deno/bin:$PATH"'    >> ~/.zshrc
 echo 'export TYPE_RACER_USER={your_username}' >> ~/.zshrc
-echo 'export TYPE_RACER_SECRET={your_secret}' >> ~/.zshrc
 ```
 OR
 ```bash
 deno install --allow-net=data.typeracer.com --allow-env --unstable
 echo 'export PATH="$HOME/.deno/bin:$PATH"'    >> ~/.profile
 echo 'export TYPE_RACER_USER={your_username}' >> ~/.profile
-echo 'export TYPE_RACER_SECRET={your_secret}' >> ~/.profile
 ```
 ...you get an idea.
 
@@ -43,9 +40,10 @@ echo 'export TYPE_RACER_SECRET={your_secret}' >> ~/.profile
 ``` bash
 $ type-racer-stats -h
     help:
-        -u USER, can be replaced with TYPE_RACER_USER env variable
-        -s SECRET, can be replaced with TYPE_RACER_SECRET env variable
-        -n NUMBER results, if skipped max possible number will be used
+        -h, --help      this message
+        -u, --user      USER, can be replaced with TYPE_RACER_USER env variable
+        -n, --number    NUMBER results, if skipped max possible number will be used
+        -r, --reverse   reverse order
 ```
 
 # Usage
