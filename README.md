@@ -1,7 +1,7 @@
-## What is this?
+## About
 CLI tool to show chart, with stats from type-racer page.
 
-### Why?
+### Motivation
 Having fun with [deno🦕](https://deno.land), looking for new toys. Following accident is outcome of that journey.
 
 # Installation
