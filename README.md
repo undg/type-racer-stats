@@ -1,5 +1,6 @@
 # About
 CLI tool to show chart, with stats from type-racer page.
+![image](https://user-images.githubusercontent.com/5306983/127060288-5734046f-707c-42bd-a8bc-f387106dd369.png)
 
 # Motivation
 Having fun with [deno🦕](https://deno.land), looking for new toys. Following accident is outcome of that journey.
@@ -79,5 +80,4 @@ Fetching data. Please wait...
       30.33 ┤╭╯
       29.36 ┼╯
 ```
-![image](https://user-images.githubusercontent.com/5306983/127060288-5734046f-707c-42bd-a8bc-f387106dd369.png)
 
