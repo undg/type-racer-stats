@@ -16,6 +16,5 @@ if (args.h) {
     console.log(`Fetching data. Please wait...`)
 
     const json = await getData(args)
-    console.log(json)
     drawChart(json)
 }
