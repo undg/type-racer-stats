@@ -4,8 +4,9 @@ import { Args, DOMParser } from './deps.ts'
 
 export async function getData(args: Args) {
     const res = await fetch(createUrl(args))
-    const doc = new DOMParser().parseFromString(await res.text(), 'text/html')
-    const rows = doc?.querySelectorAll('.scoresTable tbody tr')
+    const html = await res.text()
+    const doc = new DOMParser().parseFromString(html, 'text/html')
+    const rows = doc?.querySelectorAll('.Scores__Table__Row')
 
     let stats: Stats[] = []
     let idx = 0
@@ -20,6 +21,8 @@ export async function getData(args: Args) {
         const month = d.getMonth() + 1
         const day = d.getDate()
 
+        const [position, racers] = td[4].textContent.split('/')
+
         if (idx > 0)
             stats = [
                 // prettier-ignore
@@ -27,13 +30,11 @@ export async function getData(args: Args) {
                     id        : +td[0].textContent,
                     wpm       : +td[1].textContent.replace(/ WPM/, ''),
                     accuracy  : +td[2].textContent.replace(/\%/, '') * 10,
-                    points    : +td[3].textContent,
-                    rank      : +td[4].textContent.split('/')[0],
-                    racers    : +td[4].textContent.split('/')[1],
+                    points    : +td[4].textContent,
+                    position  : +position,
+                    racers    : +racers,
                     unixTime,
                     date      : `${year}-${month}-${day}`,
-                    ghostUrl  : td[6].querySelector('a')?.getAttribute('href') ?? '',
-                    replayUrl : td[6].querySelector('a ~ a')?.getAttribute('href') ?? '',
                 },
                 ...stats,
             ]

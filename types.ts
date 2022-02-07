@@ -3,11 +3,9 @@ export interface Stats {
     wpm: number
     accuracy?: number
     points?: number
-    rank?: number
+    position?: number
     racers?: number
     unixTime?: number
     date?: string
-    ghostUrl?: string
-    replayUrl?: string
 }
 
