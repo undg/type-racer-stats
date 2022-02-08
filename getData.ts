@@ -5,7 +5,7 @@ import { Args, DOMParser } from './deps.ts'
 export async function getData(args: Args) {
     const res = await fetch(createUrl(args))
     const html = await res.text()
-    const doc = new DOMParser().parseFromString(html, 'text/html') as HTMLElement
+    const doc = new DOMParser().parseFromString(html, 'text/html') // as HTMLElement // is not implemented in deno. To check types: uncoment run in Lsp tsserver.
     const rows = doc?.querySelectorAll('.Scores__Table__Row')
 
     let stats: Stats[] = []
